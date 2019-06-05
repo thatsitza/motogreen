@@ -1,0 +1,904 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	
+<!-- Mirrored from motogreen.co.za/Dealership by HTTrack Website Copier/3.x [XR&CO'2013], Sun, 09 Mar 2014 06:44:21 GMT -->
+<head>
+		<title>Moto Green - Dealership Corner</title>
+		<meta charset="utf-8">
+				<link rel="stylesheet" href="css/reset.css" type="text/css" media="all">
+		<link rel="stylesheet" href="css/layout.css" type="text/css" media="all">
+		<link rel="stylesheet" href="css/style.css" type="text/css" media="all">
+		<link rel="stylesheet" href="css/ticker.css" type="text/css" media="all">
+		<link rel="stylesheet" href="css/eggplant/jquery-ui-1.10.3.custom.min.css" type="text/css" media="all">
+		<script type="text/javascript" src="js/jquery-1.6.js" ></script>
+		<script type="text/javascript" src="js/cufon-yui.js"></script>
+		<script type="text/javascript" src="js/cufon-replace.js"></script>  
+		<script type="text/javascript" src="js/Vegur_300.font.js"></script>
+		<script type="text/javascript" src="js/PT_Sans_700.font.js"></script>
+		<script type="text/javascript" src="js/PT_Sans_400.font.js"></script>
+		<script type="text/javascript" src="js/tms-0.3.js"></script>
+		<script type="text/javascript" src="js/tms_presets.js"></script>
+		<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+		<script type="text/javascript" src="js/atooltip.jquery.js"></script>
+		<script type="text/javascript" src="js/ticker.js"></script>
+		<script type="text/javascript" src="js/jquery.form.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.10.3.custom.min.js"></script>
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="/js/html5.js"></script>
+		<link rel="stylesheet" href="css/ie.css" type="text/css" media="all">
+		<![endif]-->
+		<!--[if lt IE 7]>
+			<div style=' clear: both; text-align:center; position: relative;'>
+				<a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+					<img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." /></a>
+			</div>
+		<![endif]-->
+		<script type="text/javascript">
+
+  			var _gaq = _gaq || [];
+  			_gaq.push(['_setAccount', 'UA-37507809-1']);
+  			_gaq.push(['_setDomainName', 'motogreen.co.za']);
+  			_gaq.push(['_setAllowLinker', true]);
+  			_gaq.push(['_trackPageview']);
+
+  			(function() {
+    				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  			})();
+
+		</script>	
+	</head>
+	<body id="page4">
+		<style type="text/css">
+		.poll-outer {float:left;width:100px;height:100px;top:100px;position:absolute;left:-500px;z-index:99;padding:5%;display:none;}
+		.poll {background:white;border-radius:8px;-moz-border-radius:8px;-webkit-border-radius:8px;padding:30px;height:80%;overflow:auto;width:80%;margin:auto;}
+		.poll-button {float:left;top:200px;position:relative;z-index:99;left:10px;}
+	</style>
+	<script type="text/javascript">
+		var owtop = $(window).scrollTop();
+		var int;
+		var t = 0;
+		var wtop, btop;
+		var doScroll = false;
+		var again = false;
+		var up = false;
+		//var hidePoll = false;
+	
+		function slidePollButton() {			
+			if (wtop > owtop && !up) {
+				btop++;
+			}
+			else if (wtop < owtop && !up) {
+				up = true;
+			}
+			
+			if (up) {
+				btop--;
+			}
+			
+			//if (hidePoll) {
+				$('.poll-button').css('top', btop + 'px');
+				$('.poll-outer').css('top', btop - 100 + 'px');
+				int = setTimeout('slidePollButton()', 1);
+			//}
+			
+			if (btop >= wtop + 200 && !up) {
+				clearTimeout(int);
+				owtop = wtop;
+				again = false;
+			}
+			
+			if (btop <= wtop + 200 && up) {
+				clearTimeout(int);
+				owtop = wtop;
+				up = false;
+				again = false;
+			}
+		}
+		
+		$(document).ready(function() {
+			again = false;
+			
+			$.get('mediae203.html?action=poll', function(data) {
+				$('.poll').html(data);
+			});
+			
+			$('.poll-button').click(function() {
+				var w = 0;
+				
+				$('.poll-outer').show();
+				
+				$('.poll table').each(function() {
+					//alert($(this).width());
+					if (w < $(this).width()) {
+						w = $(this).width();
+					}
+				});
+				
+				w += 80;
+				w += 'px';
+				//alert(w);
+				
+				$('.poll-outer').css('height', '100px').animate({left: '-20px', width: w}, 3000).animate({height: '700px'}, 3000);//.css('left', '-20px');
+				$(this).hide();
+				//hidePoll = true;
+			});
+			
+			$('.poll-outer').mouseleave(function() {
+				//$(document).click(function() {
+					$('.poll-outer').animate({left: '-500px'}, 3000).hide('slow');
+					$('.poll-button').show();
+				//});
+			});
+			
+			$(window).scroll(function() {
+				//if (!again) {
+					wtop = $(window).scrollTop();
+					btop = $('.poll-button').position().top;
+					slidePollButton();
+					again = true;
+				//}
+			});
+		});
+	</script>
+	<div class="poll-button button1">
+		Polls
+	</div>
+	<div class="poll-outer">
+		<div class="poll">
+		</div>
+	</div>
+		<script type="text/javascript">
+	$(document).ready(function() {
+		$("#ContactForm").submit(function(event) {
+			/* stop form from submitting normally */
+    			event.preventDefault(); 
+
+   			/* Send the data using post and put the results in a div */
+    			$.post('dealership-2.html',
+    				$(this).serialize(),
+      				function(data) {
+          				$("#results").html(data);
+      				}
+    			);
+  		});
+  			
+  		$("#btnSend").click(function() {
+  			$("#ContactForm").submit();
+  		});
+		
+		$.fx.speeds._default = 1000;
+		$('#dealership').dialog({autoOpen: false, show: "puff", hide: "explode", width: "1000", height: "900"});
+		$('.ui-dialog-titlebar').css("display", "none");
+			
+		$('#btnShowDealership').click(function() {
+			//$(this).hide();
+			$('#dealership').dialog("open");
+		});
+			
+		$('#dealership').click(function() {
+			$(this).dialog("close");
+		});
+			
+		$('#dealership').mouseleave(function() {
+			$(this).dialog("close");
+		});
+			
+		$(document).tooltip({track: true, show: {effect: "fold"}, hide: {effect: "shake"}});
+		
+		$('#dlgASC').dialog({autoOpen: false, show: "puff", width: "1000", height: "900"});
+				
+		$('#btnASC').click(function () {
+			//$('#dlgASC').dialog({show: "puff", width: "1000", height: "600"});
+			$('#dlgASC').dialog('open');
+		});
+		
+		$('#dlgOutlet').dialog({autoOpen: false, show: "puff", width: "1000", height: "900"});
+				
+		$('#btnOutlet').click(function () {
+			$('#dlgOutlet').dialog('open');
+		});
+	});
+</script>		<div class="submain">
+			<div class="wrapper">
+				<h1><a href="index.html" id="logo">MotoGreen</a></h1>
+				<form id="search" accept-charset="UTF-8" method="get" action="http://motogreen.co.za/sphider/search.php">
+					<fieldset>
+						<div class="bg"><input class="input" type="text" value="Search" name="query" onblur="if(this.value=='') this.value='Search'" onFocus="if(this.value =='Search' ) this.value=''" ></div>
+					</fieldset>
+					<input type="hidden" name="search" value="1">
+				</form>
+			</div>
+			<nav>
+				<ul id="menu">
+					<li class="first"><span>&nbsp;</span></li>
+					<li><a href="index.html"><span>Homepage</span></a></li>
+					<li><a href="Company.html"><span>Company</span></a></li>
+					<li><a href="Solutions.html"><span>Solutions</span></a></li>
+					<li><a href="Dealership.html"><span>Dealerships</span></a></li>
+					<li><a href="http://gallery.motogreen.co.za/"><span>Gallery</span></a></li>
+					<li class="last"><a href="Contacts.html"><span>Contacts</span></a></li>
+				</ul>
+			</nav>
+		</div>
+		<br>
+		<div class="main bg0">
+			<br />
+		  	<div style="float:left;overflow:hidden;">
+			   <div  style="width:960px;">
+			      <div class='marquee'>
+    			         		<div id="news" class='marquee-text'>
+    			         		</div>
+			      </div>
+			   </div> 
+			</div>
+<!--header -->
+			<header>
+							</header>
+<!--header end-->
+<!--content -->
+			<article id="content">
+				<div class="wrapper">
+					<br />
+	<div class="right">
+		<div id="btnASC" class="button1" style="cursor:pointer;">Apply for Authorised Service Centre</div>
+		<div id="dlgASC">	<style type="text/css">
+		.ApplicationForm span {width:260px;}
+	</style>
+	
+	<script type="text/javascript">
+		var ascSection = 'Header';
+		$(document).ready(function () {
+			$('#btnASCPrevious').unbind('click').click(function () {			
+				switch (true) {
+					case /A/.test(ascSection):
+						ascSection = 'Header';
+						$('#ascFormSectionA').hide('slide');
+						$('#ascFormHeader').delay(800).show('slide');
+						$('#btnASCPrevious').hide();
+						break;
+						
+					case /B/.test(ascSection):
+						ascSection = 'A';
+						$('#ascFormSectionB').hide('slide');
+						$('#ascFormSectionA').delay(800).show('slide');
+						break;
+						
+					case /C/.test(ascSection):
+						ascSection = 'B';
+						$('#ascFormSectionC').hide('slide');
+						$('#ascFormSectionB').delay(800).show('slide');
+						break;
+						
+					case /D/.test(ascSection):
+						ascSection = 'C';
+						$('#ascFormSectionD').hide('slide');
+						$('#ascFormSectionC').delay(800).show('slide');
+						break;
+						
+					case /E/.test(ascSection):
+						ascSection = 'D';
+						$('#ascFormSectionE').hide('slide');
+						$('#ascFormSectionD').delay(800).show('slide');
+						break;
+						
+					case /F/.test(ascSection):
+						ascSection = 'E';
+						$('#ascFormSectionF').hide('slide');
+						$('#ascFormSectionE').delay(800).show('slide');
+						$('#btnASCNext').show();
+						$('#btnASCSend').hide();
+						$('#ASCFormResults').hide();
+						break;
+				}
+			});
+			
+			$('#btnASCNext').unbind('click').click(function () {			
+				switch (true) {
+					case /Header/.test(ascSection):
+						ascSection = 'A';
+						$('#ascFormHeader').hide('slide');
+						$('#ascFormSectionA').delay(800).show('slide');
+						$('#btnASCPrevious').show();
+						break;
+					
+					case /A/.test(ascSection):
+						ascSection = 'B';
+						$('#ascFormSectionA').hide('slide');
+						$('#ascFormSectionB').delay(800).show('slide');
+						break;
+											
+					case /B/.test(ascSection):
+						ascSection = 'C';
+						$('#ascFormSectionB').hide('slide');
+						$('#ascFormSectionC').delay(800).show('slide');
+						break;
+					
+					case /C/.test(ascSection):
+						ascSection = 'D';
+						$('#ascFormSectionC').hide('slide');
+						$('#ascFormSectionD').delay(800).show('slide');
+						break;
+						
+					case /D/.test(ascSection):
+						ascSection = 'E';
+						$('#ascFormSectionD').hide('slide');
+						$('#ascFormSectionE').delay(800).show('slide');
+						break;
+						
+					case /E/.test(ascSection):
+						ascSection = 'F';
+						$('#ascFormSectionE').hide('slide');
+						$('#ascFormSectionF').delay(800).show('slide');
+						$('#btnASCNext').hide();
+						$('#btnASCSend').show();
+						break;
+				}
+			});
+			
+			/*
+			$('#ASCForm').submit(function(event) {
+    				event.preventDefault(); 
+
+    				$.post('ascform.php',
+    					$(this).serialize(),
+      					function(data) {
+          					$('#ASCFormResults').html(data);
+          					$('#ascFormSectionF').hide();
+          					$('#ASCFormResults').show();
+          					$('#btnASCSend').hide();
+      					}
+    				);
+  			});
+  			*/
+  			
+  			function ASCSubmitted () {
+  				$('#ascFormSectionF').hide();
+          			$('#ASCFormResults').show();
+          			$('#btnASCSend').hide();
+  			}
+  			
+  			var ascFormOptions = { 
+        			target: '#ASCFormResults',
+        			success: ASCSubmitted
+        		}; 
+  			
+  			$('#ASCForm').ajaxForm(ascFormOptions);
+  			
+  			$('#btnASCSend').click(function () {
+  				$('#ASCForm').submit();
+  			});
+		});
+	</script>
+	
+	<div class="wrapper" style="height:780px;">
+		<h4 class="center">Application Form for Authorised Service Centre</h4>
+		<br />
+		<form id="ASCForm" class="ApplicationForm" action="http://motogreen.co.za/ascform.php" method="post" enctype="multipart/form-data">
+			<div id="ascFormHeader">
+						<!--<div>-->
+			<div  class="wrapper">
+				<span>Place:</span>
+				<div class="bg"><input type="text" name="ASCFormHeader_Place" class="input" ></div>
+			</div>
+			<div  class="wrapper">
+				<span>Name of Main Dealership:</span>
+				<div class="bg"><input type="text" name="ASCFormHeader_MainDealership" class="input" ></div>								
+			</div>
+			<div  class="wrapper">
+				<span>Region:</span>
+				<div class="bg"><input type="text" name="ASCFormHeader_Region" class="input" ></div>								
+				</div>
+			<div  class="wrapper">
+				<span>Province:</span>
+				<div class="bg"><input type="text" name="ASCFormHeader_Province" class="input" ></div>								
+			</div>
+			<br />
+			<!--
+			<a href="#" class="button1" id="btnSend">Send</a>
+			<a href="#" class="button1" onClick="document.getElementById('ContactForm').reset()">Clear</a>
+			-->
+		<!--</div>-->
+	
+			</div>
+			<div id="ascFormSectionA" style="display:none;">
+					<h2 class="color1">A. Details of Proposed ASC</h2>
+	<div  class="wrapper">
+		<span>Name:</span>
+		<div class="bg"><input type="text" name="ASCFormSectionA_Name" class="input" ></div>
+	</div>
+	<div  class="wrapper">
+		<span>Address:</span>
+		<div class="bg"><input type="text" name="ASCFormSectionA_Address" class="input" ></div>								
+	</div>
+	<div  class="wrapper">
+		<span>Tel No.:</span>
+		<div class="bg"><input type="text" name="ASCFormSectionA_TelNo" class="input" style="width:160px;" ></div>
+		<span style="padding-left:20px;width:100px;">Fax No.:</span>
+		<div class="bg"><input type="text" name="ASCFormSectionA_FaxNo" class="input" style="width:160px;" ></div>
+	</div>
+	<div style="padding-left:80px;">
+		<h3 class="center">Details of Authorized / Contact person:</h3>
+		<div  class="wrapper">
+			<span>Name:</span>
+			<div class="bg"><input type="text" name="ASCFormSectionA_Contact_Name" class="input" ></div>								
+		</div>
+		<div  class="wrapper">
+			<span>Address:</span>
+			<div class="bg"><input type="text" name="ASCFormSectionA_Contact_Address" class="input" ></div>								
+		</div>
+		<div  class="wrapper">
+			<span>Tel No.:</span>
+			<div class="bg"><input type="text" name="ASCFormSectionA_Contact_TelNo" class="input" ></div>								
+		</div>
+		<div  class="wrapper">
+			<span>Age:</span>
+			<div class="bg"><input type="text" name="ASCFormSectionA_Contact_Age" class="input" ></div>								
+		</div>
+		<div  class="wrapper">
+			<span>Educational Qualification:</span>
+			<div class="bg"><input type="text" name="ASCFormSectionA_Contact_Education" class="input" ></div>								
+		</div>
+	</div>
+	<br />
+	<div  class="wrapper">
+		<span>Distance to Main Dealership:</span>
+		<div class="bg"><input type="text" name="ASCFormSectionA_Distance" class="input" ></div>&nbsp;Km.
+	</div>
+	<br />
+			</div>
+			<div id="ascFormSectionB" style="display:none;">
+					<h2 class="color1">B. Existing population of ‘Atul Shakti & Atul Gem‘at the place.</h2>
+	<div  class="wrapper">
+		<span>No. of existing passenger vehicles:</span>
+		<div class="bg"><input type="text" name="ASCFormSectionB_Passenger" class="input" ></div>
+	</div>
+	<div  class="wrapper">
+		<span>No. of existing load carrier vehicles:</span>
+		<div class="bg"><input type="text" name="ASCFormSectionB_LoadCarriers" class="input" ></div>
+	</div>
+	<br />
+			</div>
+			<div id="ascFormSectionC" style="display:none;">
+					<h2 class="color1">C. Facilities.</h2>
+	<div  class="wrapper">
+		<span>Area of Workshop:</span>
+		<div class="bg"><input type="text" name="ASCFormSectionC_WorkshopArea" class="input" ></div>&nbsp;Sq. M.
+	</div>
+	<div  class="wrapper">
+		<span>Own/Rented:</span>
+			<div>
+				<input type="radio" name="ASCFormSectionC_Own" value="Own" checked="checked" title="Own" /> Own &nbsp;&nbsp;
+            			<input type="radio" name="ASCFormSectionC_Own" value="Rented" title="Rented" /> Rented
+			</div>								
+	</div>
+	<div  class="wrapper">
+		<span>If workshop is separate then distance from showroom:</span>
+		<div class="bg"><input type="text" name="ASCFormSectionC_ShowroomDistance" class="input" ></div>&nbsp;Km.
+	</div>
+	<br />
+			</div>
+			<div id="ascFormSectionD" style="display:none;">
+					<h2 class="color1">D. Proposed Investment in ATUL AUTO LTD. Dealership.</h2>
+	<div  class="wrapper">
+		<span>Workshop:</span>
+		<div class="bg"><input type="text" name="ASCFormSectionD_Workshop" class="input" ></div>&nbsp;in Rands.
+	</div>
+	<div  class="wrapper">
+		<span>Parts:</span>
+		<div class="bg"><input type="text" name="ASCFormSectionD_Parts" class="input" ></div>&nbsp;in Rands.
+	</div>
+	<div  class="wrapper">
+		<span>Working Capital:</span>
+		<div class="bg"><input type="text" name="ASCFormSectionD_Capital" class="input" ></div>&nbsp;in Rands.
+	</div>
+	<br />
+			</div>
+			<div id="ascFormSectionE" style="display:none;">
+					<h2 class="color1">E. Other Documents : (Photo copies).</h2>
+	<div  class="wrapper">
+		<span style="width:330px;">Show room and Work shop Blue print ( To scale ):</span>
+		<div class="bg"><input type="file" name="ASCFormSectionE_Blueprint" class="input" ></div>&nbsp;Zip file
+	</div>
+	<div  class="wrapper">
+		<span style="width:330px;">Photographs:</span>
+		<div class="bg"><input type="file" name="ASCFormSectionE_Photos" class="input" ></div>&nbsp;Zip file.
+	</div>
+	<br />
+			</div>
+			<div id="ascFormSectionF" style="display:none;">
+					<h2 class="color1">F. Time required for Completion and commencement of operation.</h2>
+	<div  class="wrapper">
+		<span></span>
+		<div class="bg"><input type="text" name="ASCFormSectionF_Time" class="input" ></div>
+	</div>
+	<br />
+			</div>
+			<div id="ASCFormResults" style="display:none;">
+			</div>
+		</form>
+	</div>
+		<div id="btnASCPrevious" class="button1 left" style="display:none;cursor:pointer;">Previous</div>
+	<div id="btnASCNext" class="button1 right">Next</div>
+	<div id="btnASCSend" class="button1 right" style="display:none;cursor:pointer;">Send</div></div>
+		<div id="btnOutlet" class="button1" style="cursor:pointer;">Apply for Dealer Outlet</div>
+		<div id="dlgOutlet"></div>
+	</div>
+	<br />
+				<div id="results"></div>
+				<div class="wrapper">
+					<h4>Application Form for Dealership</h4>
+					<form id="ContactForm" action="http://motogreen.co.za/">
+						<h2 class="color1">A. Basic Information</h2>
+						<h3 class="center">1. Details of Firm</h3>
+						<div>
+							<div  class="wrapper">
+								<span>Name of Firm:</span>
+								<div class="bg"><input type="text" name="AnameOfFirm" class="input" title="This is a test"></div>
+							</div>
+							<div  class="wrapper">
+								<span>Name of Owner:</span>
+								<div class="bg"><input type="text" name="AnameOfOwner" class="input" ></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Address:</span>
+								<div class="bg"><input type="text" name="Aaddress" class="input" ></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Telephone:</span>
+								<div class="bg"><input type="text" name="Atelephone" class="input" ></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Email:</span>
+								<div class="bg"><input type="text" name="Aemail" class="input"></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Nature of Firm:</span>
+								<div><input type="radio" name="AnatureType" value="Proprietary" checked="checked" title="Proprietary" /> Proprietary &nbsp;&nbsp;
+            <input type="radio" name="AnatureType" value="Private Limited" title="Private Limited" /> Private Limited &nbsp;&nbsp;
+            <input type="radio" name=A"natureType" value="Public Limited" title="Public Limited" /> Public Limited
+</div>								
+							</div>
+							<div  class="wrapper">
+								<span>Date of Establishment:</span>
+								<div class="bg"><input type="text" name="AdateEstablished" class="input"></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Weekly Off:</span>
+								<div class="bg"><input type="text" name="AweeklyOff" class="input"></div>								
+							</div>
+							
+						</div>
+						<h3 class="center">2. Business Experience</h3>
+						<div>
+							<div  class="wrapper">
+								<span>Name of Franchise 1:</span>
+								<div class="bg"><input type="text" name="AnameProduct1" class="input" style="width:180px"></div>
+								<span style="padding-left:20px;width:60px">Period:</span>
+								<div class="bg"><input type="text" name="Aperiod1" class="input" style="width:100px"></div>
+								<span style="padding-left:20px;width:120px">Annual Turnover:</span>
+								<div class="bg"><input type="text" name="Aturnover1" class="input" style="width:180px"></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Name of Franchise 2:</span>
+								<div class="bg"><input type="text" name="AnameProduct2" class="input" style="width:180px"></div>
+								<span style="padding-left:20px;width:60px">Period:</span>
+								<div class="bg"><input type="text" name="Aperiod2" class="input" style="width:100px"></div>
+								<span style="padding-left:20px;width:120px">Annual Turnover:</span>
+								<div class="bg"><input type="text" name="Aturnover2" class="input" style="width:180px"></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Name of Franchise 3:</span>
+								<div class="bg"><input type="text" name="AnameProduct3" class="input" style="width:180px"></div>
+								<span style="padding-left:20px;width:60px">Period:</span>
+								<div class="bg"><input type="text" name="Aperiod3" class="input" style="width:100px"></div>
+								<span style="padding-left:20px;width:120px">Annual Turnover:</span>
+								<div class="bg"><input type="text" name="Aturnover3" class="input" style="width:180px"></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Name of Franchise 4:</span>
+								<div class="bg"><input type="text" name="AnameProduct4" class="input" style="width:180px"></div>
+								<span style="padding-left:20px;width:60px">Period:</span>
+								<div class="bg"><input type="text" name="Aperiod4" class="input" style="width:100px"></div>
+								<span style="padding-left:20px;width:120px">Annual Turnover:</span>
+								<div class="bg"><input type="text" name="Aturnover4" class="input" style="width:180px"></div>								
+							</div>
+						</div>
+						<h2 class="color1">B. Dealership Proposal</h2>
+						<h3 class="center">1. Details of Proposal</h3>
+						<div>
+							<div  class="wrapper">
+								<span>Name of Firm:</span>
+								<div class="bg"><input type="text" name="BnameOfFirm" class="input" ></div>
+							</div>
+							<div  class="wrapper">
+								<span>Name of Owner:</span>
+								<div class="bg"><input type="text" name="BnameOfOwner" class="input" ></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Address:</span>
+								<div class="bg"><input type="text" name="Baddress" class="input" ></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Telephone:</span>
+								<div class="bg"><input type="text" name="Btelephone" class="input" ></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Email:</span>
+								<div class="bg"><input type="text" name="Bemail" class="input"></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Nature of Firm:</span>
+								<div><input type="radio" name="BnatureType" value="Proprietary" checked="checked" title="Proprietary" /> Proprietary &nbsp;&nbsp;
+            <input type="radio" name="BnatureType" value="Private Limited" title="Private Limited" /> Private Limited &nbsp;&nbsp;
+            <input type="radio" name="BnatureType" value="Public Limited" title="Public Limited" /> Public Limited
+</div>								
+							</div>
+						</div>
+						<h3 class="center">2. Owner/Partner Details</h3>
+						<div>
+							<div  class="wrapper">
+								<span>Owner/Partner 1:</span>
+								<div class="bg"><input type="text" name="Bop1" class="input" style="width:180px"></div>
+								<span style="padding-left:20px;width:80px">% Share:</span>
+								<div class="bg"><input type="text" name="Bshare1" class="input" style="width:100px"></div>
+								<span style="padding-left:20px;width:100px">Contact No.:</span>
+								<div class="bg"><input type="text" name="Bcno1" class="input" style="width:180px"></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Owner/Partner 2:</span>
+								<div class="bg"><input type="text" name="Bop2" class="input" style="width:180px"></div>
+								<span style="padding-left:20px;width:80px">% Share:</span>
+								<div class="bg"><input type="text" name="Bshare2" class="input" style="width:100px"></div>
+								<span style="padding-left:20px;width:100px">Contact No.:</span>
+								<div class="bg"><input type="text" name="Bcno2" class="input" style="width:180px"></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Owner/Partner 3:</span>
+								<div class="bg"><input type="text" name="Bop3" class="input" style="width:180px"></div>
+								<span style="padding-left:20px;width:80px">% Share:</span>
+								<div class="bg"><input type="text" name="Bshare3" class="input" style="width:100px"></div>
+								<span style="padding-left:20px;width:100px">Contact No.:</span>
+								<div class="bg"><input type="text" name="Bcno3" class="input" style="width:180px"></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Owner/Partner 4:</span>
+								<div class="bg"><input type="text" name="Bop4" class="input" style="width:180px"></div>
+								<span style="padding-left:20px;width:80px">% Share:</span>
+								<div class="bg"><input type="text" name="Bshare4" class="input" style="width:100px"></div>
+								<span style="padding-left:20px;width:100px">Contact No.:</span>
+								<div class="bg"><input type="text" name="Bcno4" class="input" style="width:180px"></div>								
+							</div>
+						</div>
+						<h3 class="center">3. Proposed Facilities for Dealership</h3>
+						<div>
+							<div  class="wrapper">
+								<span>Address of Showroom:</span>
+								<div class="bg"><input type="text" name="BaddressShowroom" class="input" ></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Address of Workshop:</span>
+								<div class="bg"><input type="text" name="BaddressWorkshop" class="input" ></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Frontage of Workshop:</span>
+								<div class="bg"><input type="text" name="BfrontageWorkshop" class="input" ></div>&nbsp;M.								
+							</div>
+							<div  class="wrapper">
+								<span>Area of Showroom:</span>
+								<div class="bg"><input type="text" name="BareaShowroom" class="input" ></div>&nbsp;Sq. M.								
+							</div>
+							<div  class="wrapper">
+								<span>Area of Workshop:</span>
+								<div class="bg"><input type="text" name="BareaWorkshop" class="input" ></div>&nbsp;Sq. M.								
+							</div>
+							<div  class="wrapper">
+								<span>Own/Rented:</span>
+								<div><input type="radio" name="Bown" value="Own" checked="checked" title="Own" /> Own &nbsp;&nbsp;
+            <input type="radio" name="Bown" value="Rented" title="Rented" /> Rented
+</div>								
+							</div>
+							<div  class="wrapper">
+								<span>Workshop attached:</span>
+								<div><input type="radio" name="Battached" value="Attached" checked="checked" title="Attached" /> Attached &nbsp;&nbsp;
+            <input type="radio" name="Battached" value="Seperate" title="Seperate" /> Seperate
+</div>								
+							</div>
+							<div  class="wrapper">
+								<span>If seperate, how far?:</span>
+								<div class="bg"><input type="text" name="BhowFar" class="input" ></div>&nbsp;Km.								
+							</div>
+						</div>
+						<h3 class="center">4. Proposed Inverstment</h3>
+						<div>
+							<div  class="wrapper">
+								<span>For Showroom:</span>
+								<div class="bg"><input type="text" name="Bishowroom" class="input" ></div>&nbsp;(in Rands)								
+							</div>
+							<div  class="wrapper">
+								<span>For Workshop:</span>
+								<div class="bg"><input type="text" name="Biworkshop" class="input" ></div>&nbsp;(in Rands)								
+							</div>
+							<div  class="wrapper">
+								<span>Working Capital:</span>
+								<div class="bg"><input type="text" name="BiworkingCapital" class="input" ></div>&nbsp;(in Rands)								
+							</div>
+							<div  class="wrapper">
+								<span>Own Resources:</span>
+								<div class="bg"><input type="text" name="BiownResources" class="input" ></div>&nbsp;(in Rands)								
+							</div>
+							<div  class="wrapper">
+								<span>Bank Loan:</span>
+								<div class="bg"><input type="text" name="BibankLoan" class="input" ></div>&nbsp;(in Rands)								
+							</div>
+							<div  class="wrapper">
+								<span>Others:</span>
+								<div class="bg"><input type="text" name="Biothers" class="input" ></div>&nbsp;(in Rands)								
+							</div>
+						</div>
+						<h2 class="color1">C. Market Estimate</h2>
+						<h3 class="center">1. Market Potential and Size</h3>
+						<div>
+							<div  class="wrapper">
+								<span>Total 3 Wheelers:</span>
+								<div class="bg"><input type="text" name="Ctotal" class="input" ></div>&nbsp;(in Rands)								
+							</div>
+							<div class="wrapper">
+								<span style="width:400px;">Other 3 Wheeler and LCV Dealers in the Territory:</span>
+							</div>
+							<div  class="wrapper">
+								<span>Dealership 1:</span>
+								<div class="bg"><input type="text" name="Cdealership1" class="input" style="width:110px"></div>
+								<span style="padding-left:20px;width:110px">Product Range:</span>
+								<div class="bg"><input type="text" name="Crange1" class="input" style="width:110px"></div>
+								<span style="padding-left:20px;width:110px">No. Passenger:</span>
+								<div class="bg"><input type="text" name="Cnopassenger1" class="input" style="width:40px"></div>
+								<span style="padding-left:20px;width:100px">No. Goods:</span>
+								<div class="bg"><input type="text" name="Cnogoods1" class="input" style="width:40px"></div>						
+							</div>
+							<div  class="wrapper">
+								<span>Dealership 2:</span>
+								<div class="bg"><input type="text" name="Cdealership2" class="input" style="width:110px"></div>
+								<span style="padding-left:20px;width:110px">Product Range:</span>
+								<div class="bg"><input type="text" name="Crange2" class="input" style="width:110px"></div>
+								<span style="padding-left:20px;width:110px">No. Passenger:</span>
+								<div class="bg"><input type="text" name="Cnopassenger2" class="input" style="width:40px"></div>
+								<span style="padding-left:20px;width:100px">No. Goods:</span>
+								<div class="bg"><input type="text" name="Cnogoods2" class="input" style="width:40px"></div>						
+							</div>
+							<div  class="wrapper">
+								<span>Dealership 3:</span>
+								<div class="bg"><input type="text" name="Cdealership3" class="input" style="width:110px"></div>
+								<span style="padding-left:20px;width:110px">Product Range:</span>
+								<div class="bg"><input type="text" name="Crange3" class="input" style="width:110px"></div>
+								<span style="padding-left:20px;width:110px">No. Passenger:</span>
+								<div class="bg"><input type="text" name="Cnopassenger3" class="input" style="width:40px"></div>
+								<span style="padding-left:20px;width:100px">No. Goods:</span>
+								<div class="bg"><input type="text" name="Cnogoods3" class="input" style="width:40px"></div>						
+							</div>
+							<div  class="wrapper">
+								<span>Dealership 4:</span>
+								<div class="bg"><input type="text" name="Cdealership4" class="input" style="width:110px"></div>
+								<span style="padding-left:20px;width:110px">Product Range:</span>
+								<div class="bg"><input type="text" name="Crange4" class="input" style="width:110px"></div>
+								<span style="padding-left:20px;width:110px">No. Passenger:</span>
+								<div class="bg"><input type="text" name="Cnopassenger4" class="input" style="width:40px"></div>
+								<span style="padding-left:20px;width:100px">No. Goods:</span>
+								<div class="bg"><input type="text" name="Cnogoods4" class="input" style="width:40px"></div>						
+							</div>
+							<div  class="wrapper">
+								<span>Dealership 5:</span>
+								<div class="bg"><input type="text" name="Cdealership5" class="input" style="width:110px"></div>
+								<span style="padding-left:20px;width:110px">Product Range:</span>
+								<div class="bg"><input type="text" name="Crange5" class="input" style="width:110px"></div>
+								<span style="padding-left:20px;width:110px">No. Passenger:</span>
+								<div class="bg"><input type="text" name="Cnopassenger5" class="input" style="width:40px"></div>
+								<span style="padding-left:20px;width:100px">No. Goods:</span>
+								<div class="bg"><input type="text" name="Cnogoods5" class="input" style="width:40px"></div>						
+							</div>
+							<div  class="wrapper">
+								<span>Dealership 6:</span>
+								<div class="bg"><input type="text" name="Cdealership6" class="input" style="width:110px"></div>
+								<span style="padding-left:20px;width:110px">Product Range:</span>
+								<div class="bg"><input type="text" name="Crange6" class="input" style="width:110px"></div>
+								<span style="padding-left:20px;width:110px">No. Passenger:</span>
+								<div class="bg"><input type="text" name="Cnopassenger6" class="input" style="width:40px"></div>
+								<span style="padding-left:20px;width:100px">No. Goods:</span>
+								<div class="bg"><input type="text" name="Cnogoods6" class="input" style="width:40px"></div>						
+							</div>
+							<div class="wrapper">
+								<span style="width:400px;"># Please furnish above details as per RTO records</span>
+							</div>
+						</div>
+						<h3 class="center" style="width:80%">2. Popular model of public transport in your teritory by other dealerships</h3>
+						<div>
+							<div  class="wrapper">
+								<span>Passenger:</span>
+								<div class="bg"><input type="text" name="Cpassenger1" class="input" style="width:240px"></div>
+								<span style="padding-left:20px;width:110px">Goods:</span>
+								<div class="bg"><input type="text" name="Cgoods1" class="input" style="width:240px"></div>						
+							</div>
+							<div  class="wrapper">
+								<span>Passenger:</span>
+								<div class="bg"><input type="text" name="Cpassenger2" class="input" style="width:240px"></div>
+								<span style="padding-left:20px;width:110px">Goods:</span>
+								<div class="bg"><input type="text" name="Cgoods2" class="input" style="width:240px"></div>						
+							</div>
+							<div  class="wrapper">
+								<span>Passenger:</span>
+								<div class="bg"><input type="text" name="Cpassenger3" class="input" style="width:240px"></div>
+								<span style="padding-left:20px;width:110px">Goods:</span>
+								<div class="bg"><input type="text" name="Cgoods3" class="input" style="width:240px"></div>						
+							</div>
+							<div  class="wrapper">
+								<span>Passenger:</span>
+								<div class="bg"><input type="text" name="Cpassenger4" class="input" style="width:240px"></div>
+								<span style="padding-left:20px;width:110px">Goods:</span>
+								<div class="bg"><input type="text" name="Cgoods4" class="input" style="width:240px"></div>						
+							</div>
+						</div>
+						<h3 class="center" style="width:80%">3. Likely potential for our range of products (Per month)</h3>
+						<div>
+							<div  class="wrapper">
+								<span>Goods:</span>
+								<div class="bg"><input type="text" name="Cgoods" class="input" ></div>								
+							</div>
+							<div  class="wrapper">
+								<span>Passenger:</span>
+								<div class="bg"><input type="text" name="Cpassenger" class="input" ></div>								
+							</div>
+							<a href="#" class="button1" id="btnSend">Send</a>
+							<a href="#" class="button1" onClick="document.getElementById('ContactForm').reset()">Clear</a>
+						</div>
+					</form>
+					<br>
+					<a class="button1" id="btnShowDealership" style="cursor:pointer;">Show Example Dealership</a>
+				</div>
+				
+				<div class="wrapper" style="display:none;" id="dealership" style="background:url('images/search.png') repeat-x repeat-y;">
+				<br>
+				<img src="images/dealership/dealership_layout.jpg" alt="" width="740" height"733">
+				</div>										
+				</div>
+			</article>
+		</div>
+		<div class="main bg1">
+			<article id="content1">
+				<div class="wrapper">
+					<img src="images/services/services_banner.jpg" alt="" width="960" height="342">				</div>
+			</article>			
+		</div>
+		<div class="main bg0">
+<!--content end-->
+<!--footer -->
+			<footer>
+				<ul id="icons">
+					<li class="first">Follow Us:</li>
+					<li><a href="http://www.facebook.com/motogreensa/" class="button1" title="Facebook"><img src="images/icon1.jpg" alt=""></a></li>
+					<li><a href="#" class="normaltip" title="Twitter"><img src="images/icon2.jpg" alt=""></a></li>
+					<li><a href="#" class="normaltip" title="Picasa"><img src="images/icon3.jpg" alt=""></a></li>
+					<li><a href="#" class="normaltip" title="YouTube"><img src="images/icon4.jpg" alt=""></a></li>
+				</ul>
+				<a href="index.html">Moto Green (Pty) Ltd</a> Reg: 2011/120356/07<br>
+				<!-- {%FOOTER_LINK} -->
+				<img src="cgi-sys/Count6695.gif?df=motogree_counter.dat|display=Counter|ft=6|md=5|frgb=100;139;216|dd=N">
+			</footer>
+<!--footer end-->
+		</div>
+		<script type="text/javascript"> Cufon.now(); </script>
+		<script type="text/javascript">
+			$(document).ready(function() {			
+				$.get('media.html', function(data) {
+					$('#news').append(data);
+				});
+				
+				scrollNews();
+			});
+		</script>
+	</body>
+
+<!-- Mirrored from motogreen.co.za/Dealership by HTTrack Website Copier/3.x [XR&CO'2013], Sun, 09 Mar 2014 06:44:34 GMT -->
+</html>
+

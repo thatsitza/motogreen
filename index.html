@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	
+<!-- Mirrored from motogreen.co.za/ by HTTrack Website Copier/3.x [XR&CO'2013], Sun, 09 Mar 2014 06:43:28 GMT -->
+<head>
+		<title>Moto Green</title>
+		<meta charset="utf-8">
+				<link rel="stylesheet" href="css/reset.css" type="text/css" media="all">
+		<link rel="stylesheet" href="css/layout.css" type="text/css" media="all">
+		<link rel="stylesheet" href="css/style.css" type="text/css" media="all">
+		<link rel="stylesheet" href="css/ticker.css" type="text/css" media="all">
+		<link rel="stylesheet" href="css/eggplant/jquery-ui-1.10.3.custom.min.css" type="text/css" media="all">
+		<script type="text/javascript" src="js/jquery-1.6.js" ></script>
+		<script type="text/javascript" src="js/cufon-yui.js"></script>
+		<script type="text/javascript" src="js/cufon-replace.js"></script>  
+		<script type="text/javascript" src="js/Vegur_300.font.js"></script>
+		<script type="text/javascript" src="js/PT_Sans_700.font.js"></script>
+		<script type="text/javascript" src="js/PT_Sans_400.font.js"></script>
+		<script type="text/javascript" src="js/tms-0.3.js"></script>
+		<script type="text/javascript" src="js/tms_presets.js"></script>
+		<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+		<script type="text/javascript" src="js/atooltip.jquery.js"></script>
+		<script type="text/javascript" src="js/ticker.js"></script>
+		<script type="text/javascript" src="js/jquery.form.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.10.3.custom.min.js"></script>
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="/js/html5.js"></script>
+		<link rel="stylesheet" href="css/ie.css" type="text/css" media="all">
+		<![endif]-->
+		<!--[if lt IE 7]>
+			<div style=' clear: both; text-align:center; position: relative;'>
+				<a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+					<img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." /></a>
+			</div>
+		<![endif]-->
+		<script type="text/javascript">
+
+  			var _gaq = _gaq || [];
+  			_gaq.push(['_setAccount', 'UA-37507809-1']);
+  			_gaq.push(['_setDomainName', 'motogreen.co.za']);
+  			_gaq.push(['_setAllowLinker', true]);
+  			_gaq.push(['_trackPageview']);
+
+  			(function() {
+    				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  			})();
+
+		</script>	
+	</head>
+	<body id="page1">
+		<style type="text/css">
+		.poll-outer {float:left;width:100px;height:100px;top:100px;position:absolute;left:-500px;z-index:99;padding:5%;display:none;}
+		.poll {background:white;border-radius:8px;-moz-border-radius:8px;-webkit-border-radius:8px;padding:30px;height:80%;overflow:auto;width:80%;margin:auto;}
+		.poll-button {float:left;top:200px;position:relative;z-index:99;left:10px;}
+	</style>
+	<script type="text/javascript">
+		var owtop = $(window).scrollTop();
+		var int;
+		var t = 0;
+		var wtop, btop;
+		var doScroll = false;
+		var again = false;
+		var up = false;
+		//var hidePoll = false;
+	
+		function slidePollButton() {			
+			if (wtop > owtop && !up) {
+				btop++;
+			}
+			else if (wtop < owtop && !up) {
+				up = true;
+			}
+			
+			if (up) {
+				btop--;
+			}
+			
+			//if (hidePoll) {
+				$('.poll-button').css('top', btop + 'px');
+				$('.poll-outer').css('top', btop - 100 + 'px');
+				int = setTimeout('slidePollButton()', 1);
+			//}
+			
+			if (btop >= wtop + 200 && !up) {
+				clearTimeout(int);
+				owtop = wtop;
+				again = false;
+			}
+			
+			if (btop <= wtop + 200 && up) {
+				clearTimeout(int);
+				owtop = wtop;
+				up = false;
+				again = false;
+			}
+		}
+		
+		$(document).ready(function() {
+			again = false;
+			
+			$.get('mediae203.html?action=poll', function(data) {
+				$('.poll').html(data);
+			});
+			
+			$('.poll-button').click(function() {
+				var w = 0;
+				
+				$('.poll-outer').show();
+				
+				$('.poll table').each(function() {
+					//alert($(this).width());
+					if (w < $(this).width()) {
+						w = $(this).width();
+					}
+				});
+				
+				w += 80;
+				w += 'px';
+				//alert(w);
+				
+				$('.poll-outer').css('height', '100px').animate({left: '-20px', width: w}, 3000).animate({height: '700px'}, 3000);//.css('left', '-20px');
+				$(this).hide();
+				//hidePoll = true;
+			});
+			
+			$('.poll-outer').mouseleave(function() {
+				//$(document).click(function() {
+					$('.poll-outer').animate({left: '-500px'}, 3000).hide('slow');
+					$('.poll-button').show();
+				//});
+			});
+			
+			$(window).scroll(function() {
+				//if (!again) {
+					wtop = $(window).scrollTop();
+					btop = $('.poll-button').position().top;
+					slidePollButton();
+					again = true;
+				//}
+			});
+		});
+	</script>
+	<div class="poll-button button1">
+		Polls
+	</div>
+	<div class="poll-outer">
+		<div class="poll">
+		</div>
+	</div>
+				<div class="submain">
+			<div class="wrapper">
+				<h1><a href="index.html" id="logo">MotoGreen</a></h1>
+				<form id="search" accept-charset="UTF-8" method="get" action="http://motogreen.co.za/sphider/search.php">
+					<fieldset>
+						<div class="bg"><input class="input" type="text" value="Search" name="query" onblur="if(this.value=='') this.value='Search'" onFocus="if(this.value =='Search' ) this.value=''" ></div>
+					</fieldset>
+					<input type="hidden" name="search" value="1">
+				</form>
+			</div>
+			<nav>
+				<ul id="menu">
+					<li class="first"><span>&nbsp;</span></li>
+					<li><a href="index.html"><span>Homepage</span></a></li>
+					<li><a href="Company.html"><span>Company</span></a></li>
+					<li><a href="Solutions.html"><span>Solutions</span></a></li>
+					<li><a href="Dealership.html"><span>Dealerships</span></a></li>
+					<li><a href="http://gallery.motogreen.co.za/"><span>Gallery</span></a></li>
+					<li class="last"><a href="Contacts.html"><span>Contacts</span></a></li>
+				</ul>
+			</nav>
+		</div>
+		<br>
+		<div class="main bg0">
+			<br />
+		  	<div style="float:left;overflow:hidden;">
+			   <div  style="width:960px;">
+			      <div class='marquee'>
+    			         		<div id="news" class='marquee-text'>
+    			         		</div>
+			      </div>
+			   </div> 
+			</div>
+<!--header -->
+			<header>
+								<!--#include virtual="cgi-bin/entropybanner.cgi"--> 
+				<div id="slider">
+					<ul class="items">
+						<li>
+							<img src="images/banner/header-banner-01.jpg" alt="">
+							<div class="banner">
+								<div class="logo_a"></div><br>
+								<span class="title"><span class="color_red">REAR ENTRY</span><span class="color_black">Experience the</span><span class="color1">Advantage</span><span class="color_black">of a front engine</span></span>
+								<a href="GEM.html" class="button1">Read More</a>
+							</div>
+						</li>
+						<li>
+							<img src="images/banner/header-banner-02.jpg" alt="">
+							<div class="banner">
+								<div class="logo_a"></div><br>
+								<span class="title"><span class="color_red">DELIVERY VAN</span><span class="color_black">Experience the</span><span class="color1">Advantage</span><span class="color_black">of a front engine</span></span>
+								<a href="GEM.html" class="button1">Read More</a>
+							</div>
+						</li>
+						<li>
+							<img src="images/banner/header-banner-03.jpg" alt="">
+							<div class="banner">
+								<div class="logo_a"></div><br>
+								<span class="title"><span class="color_red">SIDE ENTRY</span><span class="color_black">Experience the</span><span class="color1">Advantage</span><span class="color_black">of a front engine</span></span>
+								<a href="GEM.html" class="button1">Read More</a>
+							</div>
+						</li>
+						<li>
+							<img src="images/banner/header-banner-04.jpg" alt="">
+							<div class="banner">
+								<div class="logo_b"></div><br>
+								<span class="title"><span class="color_red">PAXX</span><span class="color_black">The real</span><span class="color1">Gem</span><span class="color_black">of prosperity...</span></span>
+								<a href="GEM.html" class="button1">Read More</a>
+							</div>
+						</li>
+						<li>
+							<img src="images/banner/header-banner-05.jpg" alt="">
+							<div class="banner">
+								<div class="logo_b"></div><br>
+								<span class="title"><span class="color_red">CARGO</span><span class="color_black">The real</span><span class="color1">Gem</span><span class="color_black">of prosperity...</span></span>
+								<a href="GEM.html" class="button1">Read More</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+				
+				<script>
+					$(window).load(function(){
+					$('#slider')._TMS({
+						banners:true,
+						waitBannerAnimation:false,
+						preset:'diagonalFade',
+						easing:'easeOutQuad',
+						pagination:true,
+						duration:400,
+						slideshow:8000,
+						bannerShow:function(banner){
+							banner.css({marginRight:-500}).stop().animate({marginRight:0}, 600)
+						},
+						bannerHide:function(banner){
+							banner.stop().animate({marginRight:-500}, 600)
+						}
+						})
+					})
+				</script>			</header>
+<!--header end-->
+<!--content -->
+			<article id="content">
+				<div class="wrapper">
+									<h2>iSi Moto - 3 wheeler</h2>
+					<div class="marg_right1">
+						<div class="wrapper">
+							<!--<figure class="left marg_right1">-->
+								<img src="images/company/MG_Logo.png" alt="" width="200" height="80" style="margin:10px;">
+								<div class="col2">
+									iSi Moto three wheeler - 70% of South Africans still face challenges with transportation and mobility and the current fuel and vehicle cost makes affordability and ownership even more difficult. Fortunately from October 2012 there will be a answer to this, the commercial three wheeler will be launched in South Africa. Moto Green has taken up the challenge to make mobility and transportation more affordable and accessible to all South Africans including the people in the LSM 1-5 sectors. Moto Green has partnered with Atul Automotive in India (manufacturing three wheelers for over 40 years) and Dynamic Automotive Suppliers based in Port Elizabeth have been tasked to assemble the vehicles.<br>
+									<br>
+These vehicles have served the Asian continent for the past 40 years, currently in excess of 5 million vehicles are in operation in India alone. It was only recently that the three wheelers as commercial vehicles were introduced into Africa (Kenya, Egypt, Nigeria, Mozambique, Tanzania, Angola and now South Africa). Being the cheapest and most affordable commercial transportation in the market, these vehicles also create self sustaining empowerment opportunities. Women, youth, elderly and physically disabled are the main beneficiaries from the three wheelers. Apart from Government organisations including Municipalities, Companies, Private sector and the taxi industry can make use them. They may act as feeders and/or scholar transport, mainly in the rural and township communities.<br>
+<br>
+Bread, Milk, Cool drinks can now be delivered into rural and township areas at the fraction of the cost. No more head loading, the water carried by 20 people can now be transported by a single vehicle. We offer job creation in the assembly plant, driver training, technicians, marketing, dealerships, mobile workshops and also thousands of self-employment opportunities. The Atul iSi Moto will be marketed firstly in the Eastern Cape and thereafter nationally through its Dealership network which has mobile workshops situated in most of the rural and township communities.
+								</div>
+							</div>
+						</div>
+					</div>										
+				</div>
+			</article>
+		</div>
+		<div class="main bg1">
+			<article id="content1">
+				<div class="wrapper">
+									<article id="content1">
+					<div class="wrapper">
+						<img src="images/index_banner.jpg" alt="" width="960" height="340">
+					</div>
+				</article>				</div>
+			</article>			
+		</div>
+		<div class="main bg0">
+<!--content end-->
+<!--footer -->
+			<footer>
+				<ul id="icons">
+					<li class="first">Follow Us:</li>
+					<li><a href="http://www.facebook.com/motogreensa/" class="button1" title="Facebook"><img src="images/icon1.jpg" alt=""></a></li>
+					<li><a href="#" class="normaltip" title="Twitter"><img src="images/icon2.jpg" alt=""></a></li>
+					<li><a href="#" class="normaltip" title="Picasa"><img src="images/icon3.jpg" alt=""></a></li>
+					<li><a href="#" class="normaltip" title="YouTube"><img src="images/icon4.jpg" alt=""></a></li>
+				</ul>
+				<a href="index.html">Moto Green (Pty) Ltd</a> Reg: 2011/120356/07<br>
+				<!-- {%FOOTER_LINK} -->
+				<img src="cgi-sys/Count6695.gif?df=motogree_counter.dat|display=Counter|ft=6|md=5|frgb=100;139;216|dd=N">
+			</footer>
+<!--footer end-->
+		</div>
+		<script type="text/javascript"> Cufon.now(); </script>
+		<script type="text/javascript">
+			$(document).ready(function() {			
+				$.get('media.html', function(data) {
+					$('#news').append(data);
+				});
+				
+				scrollNews();
+			});
+		</script>
+	</body>
+
+<!-- Mirrored from motogreen.co.za/ by HTTrack Website Copier/3.x [XR&CO'2013], Sun, 09 Mar 2014 06:44:14 GMT -->
+</html>
+
